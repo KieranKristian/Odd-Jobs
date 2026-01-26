@@ -49,15 +49,15 @@ public class ThirdPersonController : MonoBehaviour {
     private void FixedUpdate() {
         MovePlayer();
 
-        if (rb.velocity.y < 0f) {
-            rb.velocity -= Vector3.down * Physics.gravity.y * Time.fixedDeltaTime * 2;
+        if (rb.linearVelocity.y < 0f) {
+            rb.linearVelocity -= Vector3.down * Physics.gravity.y * Time.fixedDeltaTime * 2;
         }
         
         //Limiting players horizontal velocity
-        Vector3 horizontalVelocity = rb.velocity;
+        Vector3 horizontalVelocity = rb.linearVelocity;
         horizontalVelocity.y = 0;
         if(horizontalVelocity.sqrMagnitude > maxSpeed * maxSpeed) {
-            rb.velocity = horizontalVelocity.normalized * maxSpeed + Vector3.up * rb.velocity.y;
+            rb.linearVelocity = horizontalVelocity.normalized * maxSpeed + Vector3.up * rb.linearVelocity.y;
         }
 
         LookAt();
@@ -145,7 +145,7 @@ public class ThirdPersonController : MonoBehaviour {
     void OnJump() {
         if (IsGrounded()) {
             //Resetting vertical velocity
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
             //Limits jump force if the player is holding something
             jumpForce = interactor.state == Interactor.interactionState.holding ? 5 : 12;
